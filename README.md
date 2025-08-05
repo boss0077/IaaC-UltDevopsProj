@@ -19,6 +19,10 @@ Connect k8 cluster from CLI
 Kubectl config current-context 	##check if cluster present in the latest name.
 	##if not present use the below line to add it 
 	Aws eks update-kubeconfig –region region-code –name cluster-name
+
+	For this proj we are using the below command:
+	aws eks update-kubeconfig --region us-east-1 --name OTel-eks-cluster
+
 	##to confirm use again - Kubectl config current-context 
 
 Step 4:
