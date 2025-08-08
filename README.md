@@ -1,18 +1,21 @@
+								IaaC - Terraform
 
 
-
-
-
-Now the objective and the explanation of the project will be done later.
-
-Below are the steps after cloning the code to run the application as planned:
 Step 1:
-To use IaC tf to set up the state file management we deploy S3 and dynamoDB. [for remote   backeded and state locking]
-	This tf file is present in bkend folder of trfm; terraform init, plan and deploy.
-
+To use IaC tf to set up the state file management we deploy S3 and dynamoDB. [for remote backend and state locking]
+		-- present in bkend folder.
+Next:
+	This tf file is  in bkend folder of trfm; terraform init, plan and deploy.
 Step 2:
-Do the same to deploy VPC and EKS tf being present in modules.
-	
+Do the same to deploy VPC and EKS tf being present in modules. --present in modules folder 
+
+
+
+---------------------------EOF-------------------------------
+
+
+
+
 Step 3:
 Connect k8 cluster from CLI
 	Kubectl config view  
