@@ -96,7 +96,7 @@ eksctl create iamserviceaccount \
   --approve
 
 
-Deploy ALB Controller
+Deploy ALB Controller--
 
 add helm repo 
 helm repo add eks https://aws.github.io/eks-charts
@@ -121,3 +121,9 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   Since we dont have DNS we have to over write it in our personal lap with the IP which we get by nslookup 
 
   the path to put the info is - sudo vim /etc/hosts 
+
+  ------this ends CI part ------
+
+
+  ArgoCD-
+  
