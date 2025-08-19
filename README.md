@@ -47,22 +47,24 @@ but there is a downside to that as LB is only declarative so not much of an edit
 	And as a best practice many company uses routing rules where the accessing to the app with IP's are restricted.
 	SO the routing rules can be created only through ingress resource. 
 
+Host --> Ingress --> Service -->Deployment --> Pod --> Container
+
 
 Step 6:
 Deploying ALB Ingress controller
 	#check eksctl version
-	#commands to configure IAM OIDC provider
-	export cluster_name=OTel-eks-cluster
+	#commands to configure IAM OIDC p
+  
+export cluster_name=OTel-eks-cluster
 
-oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer"  `	--output text | cut -d '/' -f 5) 
+oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer"  --output text | cut -d '/' -f 5) 
 
 to associate it :
 
-
-Host --> Ingress --> Service -->Deployment --> Pod --> Container
-
 #Check if there is an IAM OIDC provider configured already - this help to have the IAM to pod level inside the k8s to have permission to create resources outside the k8s.
-aws iam list-open-id-connect-providers | grep $oidc_id | cut -d "/" -f4\n
+
+aws iam list-open-id-connect-providers --output text | grep "$oidc_id" | cut -d "/" -f4
+
 
 #If not, run the below command
 eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
@@ -75,6 +77,14 @@ curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-cont
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam_policy.json
+
+
+Note: before creating IAM role -if executed before there might be cache which will result is error follow the below steps:
+# List CloudFormation stacks related to your cluster
+aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE | grep -i load-balancer
+
+# Delete the specific stack (replace with actual stack name)
+aws cloudformation delete-stack --stack-name eksctl-OTel-eks-cluster-addon-iamserviceaccount-kube-system-aws-load-balancer-controller
 
 
 ##Create IAM Role
@@ -108,9 +118,9 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region=us-east-1 \
-  --set vpcId=vpc-021a877d5cc8d30fe
+  --set vpcId=vpc-022bab243ba709c64 
 
-  helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=OTel-eks-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller --set region=us-east-1 --set vpcId=vpc-021a877d5cc8d30fe
+  helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=OTel-eks-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller --set region=us-east-1 --set vpcId=vpc-022bab243ba709c64 
 
 
   # check if 2 pods as ingress controll is running.
@@ -121,10 +131,3 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   Since we dont have DNS we have to over write it in our personal lap with the IP which we get by nslookup 
 
   the path to put the info is - sudo vim /etc/hosts 
-
-
-
-    - to install Gitops ie ArgoCD
-
-  https://argo-cd.readthedocs.io/en/stable/getting_started/
-  
