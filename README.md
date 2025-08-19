@@ -121,3 +121,10 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   Since we dont have DNS we have to over write it in our personal lap with the IP which we get by nslookup 
 
   the path to put the info is - sudo vim /etc/hosts 
+
+
+
+    - to install Gitops ie ArgoCD
+
+  https://argo-cd.readthedocs.io/en/stable/getting_started/
+  
