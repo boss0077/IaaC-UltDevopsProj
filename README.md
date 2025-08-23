@@ -131,3 +131,6 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   Since we dont have DNS we have to over write it in our personal lap with the IP which we get by nslookup 
 
   the path to put the info is - sudo vim /etc/hosts 
+
+
+  Later install ArgoCD using helm and configure to repo such that if any update in manifest it will automatically deploy.
